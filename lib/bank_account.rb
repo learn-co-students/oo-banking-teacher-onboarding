@@ -13,6 +13,10 @@ class BankAccount
     @balance += amount
   end
 
+  def withdraw(amount)
+    !(@balance - amount).negative? ? @balance -= amount : "Sorry, your account balance is too low"
+  end
+
   def display_balance
     "Your balance is $#{@balance}."
   end

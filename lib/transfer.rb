@@ -10,26 +10,30 @@ class Transfer
   end
 
   def valid?
-    sender.valid? && receiver.valid?
+    @sender.valid? && @receiver.valid?
+  end
+
+  def complete?
+    @status == "complete"
   end
 
   def execute_transaction
-    if valid? && sender.balance >= amount && @status != "complete"
-      sender.balance -= amount
-      receiver.balance += amount
+    if self.valid? && @sender.balance >= @amount && !self.complete?
+      @sender.withdraw(@amount)
+      @receiver.deposit(@amount)
       @status = "complete"
     else
-      reject_transfer
+      self.reject_transfer
     end
   end
 
   def reverse_transfer
-    if valid? && receiver.balance >= amount && @status == "complete"
-      receiver.balance -= amount
-      sender.balance += amount
+    if self.valid? && @receiver.balance >= @amount && self.complete?
+      @receiver.withdraw(@amount)
+      @sender.deposit(@amount)
       @status = "reversed"
     else
-      reject_transfer
+      self.reject_transfer
     end
   end
 
