@@ -64,6 +64,7 @@ describe 'Transfer' do
     end
 
     it "rejects a transfer if the sender doesn't have a valid account" do
+      
       expect(bad_transfer.execute_transaction).to eq("Transaction rejected. Please check your account balance.")
       expect(bad_transfer.status).to eq("rejected")
     end
@@ -81,6 +82,7 @@ describe 'Transfer' do
     end
 
     it "it can only reverse executed transfers" do
+      puts transfer.status
       transfer.reverse_transfer
       expect(amanda.balance).to eq(1000)
       expect(avi.balance).to eq(1000)
